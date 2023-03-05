@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,45 +24,33 @@ namespace ValidParentheses
         public bool IsValidParentheses(Span<char> chars)
         {
             Stack<char> stack = new Stack<char>();
-            bool isValidParentheses = true;
 
             foreach (var parentheses in chars)
             {
-                // Pushing
                 if (parentheses == '(' || parentheses == '{' || parentheses == '[')
                 {
                     stack.Push(parentheses);
                     continue;
                 }
-                // if item is closing parentheses then we check if the top element in stack is a matching open parentheses
+
                 if (stack.Count != 0 && CheckForMatchingOpenParentheses(stack.Pop(), parentheses))
                     continue;
 
-                // if you reach this point this mean it's not valid expression and so we break the loop and return false
-                isValidParentheses = false;
-                break;
+                return false;
             }
 
-            return (isValidParentheses) ? true : false;
+            return (stack.Count == 0) ? true : false;
         }
 
         public bool CheckForMatchingOpenParentheses(char peek, char current)
         {
-            switch (current)
+            return (current, peek) switch
             {
-                case ')':
-                    if (peek == '(') return true;
-                    break;
-                case '}':
-                    if (peek == '{') return true;
-                    break;
-                case ']':
-                    if (peek == '[') return true;
-                    break;
-                default:
-                    return false;
-            }
-            return false;
+                ('}', '{') => true,
+                (')', '(') => true,
+                (']', '[') => true,
+                _ => false
+            };
         }
     }
 }

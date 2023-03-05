@@ -2,4 +2,7 @@
 using ValidParentheses;
 
 Console.WriteLine("Valid or not!, Let's find out...");
-Checker checker = new();
+while (true)
+{
+    Checker checker = new();
+}
